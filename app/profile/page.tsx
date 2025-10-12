@@ -12,7 +12,7 @@ export default function ProfilePage() {
             <User className="h-12 w-12 text-emerald-700" />
           </div>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold mb-1">用户名</h1>
+            <h1 className="text-2xl font-bold mb-1">用户名:</h1>
             <p className="text-zinc-500 text-sm mb-4">user@example.com</p>
             <div className="flex items-center gap-3">
               <button className="px-4 py-2 rounded-lg border text-sm hover:bg-zinc-50">
