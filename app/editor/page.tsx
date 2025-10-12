@@ -4,7 +4,7 @@ import { useSignStore } from '@/store/signStore'
 import { SVGCanvas } from '@/components/SVGCanvas'
 import { LayerTree } from '@/components/LayerTree'
 import { PropertyPanel } from '@/components/PropertyPanel'
-import { SpacingPanel } from '@/components/SpacingPanel'
+// import { SpacingPanel } from '@/components/SpacingPanel'
 import { AuditPanel } from '@/components/AuditPanel'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -148,16 +148,9 @@ export default function EditorPage() {
             </TabsContent>
             
             <TabsContent value="spacing" className="p-4">
-              <SpacingPanel
-                doc={doc}
-                onChange={(partial) => {
-                  setDoc(partial)
-                  setTimeout(() => {
-                    reflow()
-                    audit()
-                  }, 100)
-                }}
-              />
+              <div className="text-center py-8 text-zinc-500">
+                间距面板功能优化中
+              </div>
             </TabsContent>
             
             <TabsContent value="audit" className="p-4">
