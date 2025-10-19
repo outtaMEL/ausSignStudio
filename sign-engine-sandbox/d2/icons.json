@@ -1,0 +1,9 @@
+{
+  "arrow-right-std": {
+    "scalePolicy": "match_text_line",
+    "nativeW": 100,
+    "nativeH": 80,
+    "baselineAnchor": "middle"
+  }
+}
+

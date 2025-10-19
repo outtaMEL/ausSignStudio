@@ -1,0 +1,11 @@
+{
+  "templateCode": "G1-1-left",
+  "input": {
+    "destinationName": "Mary Hill",
+    "distanceKm": "12",
+    "arrow": "arrow-right-std"
+  },
+  "pxPerH": 10,
+  "_comment": "左箭头示例"
+}
+

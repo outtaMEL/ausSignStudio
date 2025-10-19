@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Preview - D1-D4 Sandbox</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: #1a1a1a;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    header {
+      background: #2a2a2a;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #444;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .subtitle {
+      color: #999;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+    
+    .preview-container {
+      background: #111;
+      border: 2px solid #444;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      max-width: 90vw;
+      max-height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    object {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+    
+    .error {
+      color: #ff6b6b;
+      padding: 1rem;
+      background: #2a1a1a;
+      border: 1px solid #ff6b6b;
+      border-radius: 4px;
+    }
+    
+    footer {
+      background: #2a2a2a;
+      padding: 1rem 2rem;
+      border-top: 1px solid #444;
+      text-align: center;
+      color: #666;
+      font-size: 0.875rem;
+    }
+    
+    code {
+      background: #333;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.875em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚦 Sign Engine Sandbox</h1>
+    <div class="subtitle">D1-D4 最小闭环预览</div>
+  </header>
+  
+  <main>
+    <div class="preview-container">
+      <object 
+        data="../out.svg" 
+        type="image/svg+xml"
+        aria-label="Generated sign preview">
+        <div class="error">
+          ❌ 无法加载 out.svg<br>
+          <small>请先运行 <code>npm run demo</code> 生成 SVG 文件</small>
+        </div>
+      </object>
+    </div>
+  </main>
+  
+  <footer>
+    💡 运行 <code>npm run demo</code> 生成或更新 out.svg，然后刷新此页面
+  </footer>
+</body>
+</html>
+

@@ -1,0 +1,281 @@
+// Prisma schema for AU Direction Sign Studio
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  avatar        String?
+  role          String    @default("user") // user, admin
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  
+  // User preferences
+  preferences   Json?     // { theme, language, defaultParams, etc }
+  
+  // Relations
+  signs                Sign[]
+  elementTemplates     ElementTemplate[]
+  templateCollections  TemplateCollection[]
+  
+  @@map("users")
+}
+
+// Sign document
+model Sign {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name            String
+  family          String        // G1-wide, G1-narrow, etc
+  
+  // Template reference
+  signTemplateId  String?
+  signTemplate    SignTemplate? @relation("SignTemplateToSign", fields: [signTemplateId], references: [id], onDelete: SetNull)
+  
+  layout          String        // LANDSCAPE, PORTRAIT
+  
+  // Sign data (JSON)
+  data            Json          // Full SignDoc as JSON
+  
+  // Metadata
+  thumbnail       String?
+  svg             String?       @db.Text
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  lastOpenedAt    DateTime?
+  
+  // Tags and organization
+  tags            String[]
+  isFavorite      Boolean       @default(false)
+  
+  @@map("signs")
+  @@index([userId])
+  @@index([family])
+  @@index([signTemplateId])
+}
+
+// Sign Template (标志类型模板，如 G1-1, G1-2)
+model SignTemplate {
+  id              String    @id @default(cuid())
+  
+  // 标志基本信息
+  code            String    @unique // G1-1, G1-2, G4-1, etc
+  name            String    // e.g., "Direction Sign (two-panel)"
+  description     String?
+  
+  // 面板配置
+  panelCount      Int       // 2 or 3 panels
+  layoutType      String    // STANDARD, OFFSET, FOCAL_POINT
+  
+  // 尺寸规范 (mm)
+  defaultWidth    Float?
+  defaultHeight   Float?
+  minWidth        Float?
+  maxWidth        Float?
+  
+  // 设计规范
+  specifications  Json      // Border radius, padding, spacing rules, etc
+  
+  // 分类
+  category        String    // DIRECTION, GUIDE, DISTANCE, etc
+  family          String    // G1, G2, G4, etc
+  
+  isActive        Boolean   @default(true)
+  sortOrder       Int       @default(0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  panels          PanelTemplate[]
+  signs           Sign[]    @relation("SignTemplateToSign")
+  
+  @@map("sign_templates")
+  @@index([code])
+  @@index([family])
+}
+
+// Panel Template (面板模板，定义每个面板的结构)
+model PanelTemplate {
+  id                String        @id @default(cuid())
+  signTemplateId    String
+  signTemplate      SignTemplate  @relation(fields: [signTemplateId], references: [id], onDelete: Cascade)
+  
+  // 面板位置（从上到下或从左到右）
+  position          Int           // 0, 1, 2
+  name              String        // "Top Panel", "Middle Panel", "Bottom Panel"
+  
+  // 面板类型
+  type              String        // PRIMARY, SECONDARY, SERVICE
+  
+  // 面板布局
+  layout            Json          // { rows, columns, zones, etc }
+  
+  // 允许的元素类型
+  allowedElements   String[]      // ["ROUTE", "DESTINATION", "ARROW", "ROAD_NAME"]
+  
+  // 样式配置
+  backgroundColor   String        @default("#006747") // AU green
+  borderColor       String?
+  minHeight         Float?
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  @@map("panel_templates")
+  @@index([signTemplateId])
+}
+
+// Element Template (元素模板：箭头、路线盾牌、图标等)
+model ElementTemplate {
+  id              String    @id @default(cuid())
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name            String
+  description     String?
+  
+  // 元素类型
+  type            String    // ARROW, ROUTE_SHIELD, SYMBOL, ICON, SERVICE_SIGN
+  category        String?   // For route shields: NATIONAL, STATE, METRO, TOURIST
+  
+  // SVG数据或路径
+  svgPath         String?   @db.Text
+  svgData         Json?     // Parametric SVG definition
+  
+  // 尺寸约束
+  defaultWidth    Float?
+  defaultHeight   Float?
+  aspectRatio     Float?
+  
+  // 样式
+  defaultColors   Json?     // { fill, stroke, text, etc }
+  
+  // 可配置参数
+  parameters      Json?     // For parametric elements (e.g., route number, size)
+  
+  // 标签和组织
+  tags            String[]
+  isPublic        Boolean   @default(false)
+  isDefault       Boolean   @default(false)
+  
+  usageCount      Int       @default(0)
+  thumbnail       String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("element_templates")
+  @@index([userId])
+  @@index([type])
+  @@index([category])
+}
+
+// Font/Typography Template (字体规范模板)
+model TypographyTemplate {
+  id              String    @id @default(cuid())
+  
+  name            String    @unique // "AS1744", "Transport", "Clearview"
+  description     String?
+  
+  // 字体信息
+  fontFamily      String
+  fontFiles       Json?     // Font file references
+  
+  // 字号规范
+  sizeRules       Json      // { h1: 200, h2: 150, body: 120, etc } in mm
+  
+  // 字重规范
+  weights         Json      // { normal: 400, medium: 500, bold: 700 }
+  
+  // 字间距规范
+  letterSpacing   Json?
+  lineHeight      Json?
+  
+  isDefault       Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("typography_templates")
+}
+
+// Color Scheme Template (配色方案)
+model ColorScheme {
+  id              String    @id @default(cuid())
+  
+  name            String    @unique // "AS1742.3 Standard", "VicRoads", etc
+  description     String?
+  
+  // 颜色定义
+  colors          Json      // { green: "#006747", white: "#FFFFFF", yellow: "#FFC72C", ... }
+  
+  // 使用规则
+  usageRules      Json?     // When to use each color
+  
+  isDefault       Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("color_schemes")
+}
+
+// Template Collection (模板集合，用于组织相关模板)
+model TemplateCollection {
+  id              String    @id @default(cuid())
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name            String
+  description     String?
+  
+  // 包含的模板ID列表
+  signTemplates   String[]  // Array of SignTemplate IDs
+  elements        String[]  // Array of ElementTemplate IDs
+  
+  thumbnail       String?
+  
+  isPublic        Boolean   @default(false)
+  isDefault       Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("template_collections")
+  @@index([userId])
+}
+
+// Activity log (optional - for analytics)
+model Activity {
+  id            String    @id @default(cuid())
+  userId        String
+  
+  action        String    // created, updated, exported, etc
+  entityType    String    // sign, template
+  entityId      String?
+  
+  metadata      Json?
+  
+  createdAt     DateTime  @default(now())
+  
+  @@map("activities")
+  @@index([userId])
+  @@index([createdAt])
+}
+

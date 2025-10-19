@@ -1,0 +1,13 @@
+{
+  "name": "sign-engine-sandbox",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "D1-D4 minimum loop: h-space layout engine + SVG renderer",
+  "scripts": {
+    "dev": "node playground/run.js",
+    "demo": "node playground/run.js",
+    "test": "node playground/test-all.js",
+    "web": "node web/serve.js"
+  }
+}
+

@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { Loader2 } from 'lucide-react'
 
 function SectionCard({ title, subtitle, children }: any) {
   return (
@@ -16,17 +18,36 @@ function SectionCard({ title, subtitle, children }: any) {
   )
 }
 
-const TEMPLATES = [
-  { code: 'G1-1', name: 'Stack Wide', thumb: '/thumbs/g1-1.svg' },
-  { code: 'G1-N', name: 'Stack Narrow', thumb: '/thumbs/g1-n.svg' },
-  { code: 'G2', name: 'Intersection Type 1', thumb: '/thumbs/g2.svg' },
-  { code: 'G3', name: 'Intersection Type 2', thumb: '/thumbs/g3.svg' },
-  { code: 'Type 3', name: 'Fingerboard', thumb: '/thumbs/type3.svg' },
-  { code: 'Type D', name: 'Driving Instruction', thumb: '/thumbs/typed.svg' },
-  { code: 'DIA', name: 'Diagrammatic', thumb: '/thumbs/dia.svg' },
-]
+type SignTemplate = {
+  id: string
+  code: string
+  name: string
+  description: string
+  panelCount: number
+  family: string
+  panels: Array<{
+    position: number
+    backgroundColor: string
+  }>
+}
 
 export default function DashboardPage() {
+  const [templates, setTemplates] = useState<SignTemplate[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/templates/signs')
+      .then(res => res.json())
+      .then(data => {
+        setTemplates(data)
+        setLoading(false)
+      })
+      .catch(error => {
+        console.error('Failed to load templates:', error)
+        setLoading(false)
+      })
+  }, [])
+
   return (
     <>
       {/* 顶部两块并排 */}
@@ -41,32 +62,59 @@ export default function DashboardPage() {
 
       {/* 下方：所有模板 */}
       <SectionCard title="All Templates" subtitle="选择模板开始；Details 可查看参数">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {TEMPLATES.map((t) => (
-            <div key={t.code} className="border rounded-xl overflow-hidden bg-white">
-              <div className="aspect-[4/3] grid place-items-center bg-zinc-50">
-                {/* 可替换为真实缩略图 */}
-                <span className="text-xs text-zinc-400">{t.thumb}</span>
-              </div>
-              <div className="p-3 flex items-center justify-between">
-                <div>
-                  <div className="text-sm font-medium">{t.name}</div>
-                  <div className="text-xs text-zinc-500">{t.code}</div>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {templates.map((t) => (
+              <div key={t.code} className="border rounded-xl overflow-hidden bg-white hover:shadow-lg transition-shadow">
+                <div className="aspect-[4/3] flex flex-col gap-1 p-3 bg-zinc-50">
+                  {/* 显示面板预览 */}
+                  {t.panels.map((panel) => (
+                    <div 
+                      key={panel.position}
+                      className="flex-1 rounded border-2 border-white"
+                      style={{ backgroundColor: panel.backgroundColor }}
+                    />
+                  ))}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Link href="/new" className="text-emerald-700 text-sm">
-                    Use
-                  </Link>
-                  <Link href={`/templates/${t.code}`} className="text-zinc-500 text-xs underline">
-                    Details
-                  </Link>
+                <div className="p-3">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <div className="text-sm font-medium">{t.name}</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">{t.code}</div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-zinc-600 mb-3 line-clamp-2">
+                    {t.description}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="text-xs text-zinc-500">
+                      {t.panelCount} 面板
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Link 
+                        href="/new" 
+                        className="text-emerald-700 text-sm font-medium hover:text-emerald-800"
+                      >
+                        Use
+                      </Link>
+                      <Link 
+                        href={`/templates/${t.code}`} 
+                        className="text-zinc-500 text-xs underline hover:text-zinc-700"
+                      >
+                        Details
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </SectionCard>
     </>
   )
 }
-

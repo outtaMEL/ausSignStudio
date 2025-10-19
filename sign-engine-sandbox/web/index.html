@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Engine Sandbox - Interactive Playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 左侧控制面板 -->
+    <aside class="control-panel">
+      <div class="panel-header">
+        <h1>🎛️ 控制面板</h1>
+        <button id="btn-reset" class="btn-icon" title="重置为默认">↺</button>
+      </div>
+
+      <div class="panel-scroll">
+        <!-- Sign Type 选择 -->
+        <details class="control-group" open>
+          <summary>📋 Sign Type</summary>
+          <div class="control-items">
+            <label>
+              <span>类型</span>
+              <select id="sign-type">
+                <option value="G1-1">G1-1 (两块面板)</option>
+                <option value="G1-2">G1-2 (三块面板)</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <!-- Panel 1 -->
+        <details class="control-group" id="panel-1-section" open>
+          <summary>📍 Panel 1</summary>
+          <div class="control-items">
+            <label>
+              <span>Road Name (白底黑字)</span>
+              <input type="text" id="panel1-roadname" placeholder="SALTASH HWY" />
+            </label>
+            
+            <label>
+              <span>Road Number Type</span>
+              <select id="panel1-road-type">
+                <option value="none">无</option>
+                <option value="number">Road Number (黄字)</option>
+                <option value="shield">Shield</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Road Number (黄字)</span>
+              <input type="text" id="panel1-roadnumber" placeholder="A85" />
+            </label>
+            
+            <label>
+              <span>Shield Label</span>
+              <input type="text" id="panel1-shieldlabel" placeholder="M1" />
+            </label>
+            
+            <label>
+              <span>Destination 1</span>
+              <input type="text" id="panel1-dest1" placeholder="Plumpton" />
+            </label>
+            
+            <label>
+              <span>Destination 2 (可选)</span>
+              <input type="text" id="panel1-dest2" placeholder="" />
+            </label>
+            
+            <label>
+              <span>Destination 3 (可选)</span>
+              <input type="text" id="panel1-dest3" placeholder="" />
+            </label>
+            
+            <label>
+              <span>方向</span>
+              <select id="panel1-direction">
+                <option value="forward">向前 ↑</option>
+                <option value="left">向左 ←</option>
+                <option value="right">向右 →</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Destinations 组对齐</span>
+              <select id="panel1-align-center">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Road Number 对齐</span>
+              <select id="panel1-align-roadnum">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Arrow 对齐</span>
+              <select id="panel1-align-arrow">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <!-- Panel 2 -->
+        <details class="control-group" id="panel-2-section" open>
+          <summary>📍 Panel 2</summary>
+          <div class="control-items">
+            <label>
+              <span>Road Name (白底黑字)</span>
+              <input type="text" id="panel2-roadname" placeholder="" />
+            </label>
+            
+            <label>
+              <span>Road Number Type</span>
+              <select id="panel2-road-type">
+                <option value="none">无</option>
+                <option value="number">Road Number (黄字)</option>
+                <option value="shield">Shield</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Road Number (黄字)</span>
+              <input type="text" id="panel2-roadnumber" placeholder="A85" />
+            </label>
+            
+            <label>
+              <span>Shield Label</span>
+              <input type="text" id="panel2-shieldlabel" placeholder="M1" />
+            </label>
+            
+            <label>
+              <span>Destination 1</span>
+              <input type="text" id="panel2-dest1" placeholder="Hawker" />
+            </label>
+            
+            <label>
+              <span>Destination 2 (可选)</span>
+              <input type="text" id="panel2-dest2" placeholder="" />
+            </label>
+            
+            <label>
+              <span>Destination 3 (可选)</span>
+              <input type="text" id="panel2-dest3" placeholder="" />
+            </label>
+            
+            <label>
+              <span>方向</span>
+              <select id="panel2-direction">
+                <option value="forward">向前 ↑</option>
+                <option value="left">向左 ←</option>
+                <option value="right">向右 →</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Destinations 组对齐</span>
+              <select id="panel2-align-center">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Road Number 对齐</span>
+              <select id="panel2-align-roadnum">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Arrow 对齐</span>
+              <select id="panel2-align-arrow">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <!-- Panel 3 -->
+        <details class="control-group" id="panel-3-section" style="display:none;">
+          <summary>📍 Panel 3</summary>
+          <div class="control-items">
+            <label>
+              <span>Road Name (白底黑字)</span>
+              <input type="text" id="panel3-roadname" placeholder="" />
+            </label>
+            
+            <label>
+              <span>Road Number Type</span>
+              <select id="panel3-road-type">
+                <option value="none">无</option>
+                <option value="number">Road Number (黄字)</option>
+                <option value="shield">Shield</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Road Number (黄字)</span>
+              <input type="text" id="panel3-roadnumber" placeholder="A30" />
+            </label>
+            
+            <label>
+              <span>Shield Label</span>
+              <input type="text" id="panel3-shieldlabel" placeholder="M2" />
+            </label>
+            
+            <label>
+              <span>Destination 1</span>
+              <input type="text" id="panel3-dest1" placeholder="Sydney" />
+            </label>
+            
+            <label>
+              <span>Destination 2 (可选)</span>
+              <input type="text" id="panel3-dest2" placeholder="" />
+            </label>
+            
+            <label>
+              <span>Destination 3 (可选)</span>
+              <input type="text" id="panel3-dest3" placeholder="" />
+            </label>
+            
+            <label>
+              <span>方向</span>
+              <select id="panel3-direction">
+                <option value="forward">向前 ↑</option>
+                <option value="left">向左 ←</option>
+                <option value="right">向右 →</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Destinations 组对齐</span>
+              <select id="panel3-align-center">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Road Number 对齐</span>
+              <select id="panel3-align-roadnum">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+            
+            <label>
+              <span>Arrow 对齐</span>
+              <select id="panel3-align-arrow">
+                <option value="">默认（跟随方向）</option>
+                <option value="left">强制左对齐</option>
+                <option value="right">强制右对齐</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <!-- B. 模板参数 -->
+        <details class="control-group" open>
+          <summary>B. 模板参数 (Template / D3)</summary>
+          <div class="control-items">
+            <label>
+              <span>字母高度 (h)</span>
+              <input type="number" id="tmpl-letter-height" value="8" step="0.25" min="4" max="16" />
+            </label>
+            <label>
+              <span>行间距 (h)</span>
+              <input type="number" id="tmpl-line-spacing" value="0.75" step="0.25" min="0" max="4" />
+            </label>
+            <label>
+              <span>组间距 (h)</span>
+              <input type="number" id="tmpl-group-spacing" value="1.0" step="0.25" min="0" max="8" />
+            </label>
+            <label>
+              <span>板边距 (h)</span>
+              <input type="number" id="tmpl-board-pad" value="1.0" step="0.25" min="0" max="4" />
+            </label>
+            <label id="panel-spacing-row" style="display:none;">
+              <span>面板间距 (h)</span>
+              <input type="number" id="tmpl-panel-spacing" value="0.3" step="0.1" min="0" max="2" />
+            </label>
+            <label>
+              <span>圆角 (h)</span>
+              <input type="number" id="tmpl-corner-radius" value="0.5" step="0.1" min="0" max="2" />
+            </label>
+            <label>
+              <span>边框宽度 (h)</span>
+              <input type="number" id="tmpl-border" value="0.2" step="0.05" min="0" max="1" />
+            </label>
+            <label>
+              <span>箭头位置</span>
+              <select id="tmpl-arrow-placement">
+                <option value="right">右侧</option>
+                <option value="left">左侧</option>
+                <option value="none">无</option>
+              </select>
+            </label>
+            <label>
+              <span>盾形位置</span>
+              <select id="tmpl-shield-placement">
+                <option value="left">左侧</option>
+                <option value="none">无</option>
+              </select>
+            </label>
+            <label>
+              <span>对齐策略</span>
+              <select id="tmpl-group-align">
+                <option value="middle">middle</option>
+                <option value="baseline-first">baseline-first</option>
+                <option value="baseline-last">baseline-last</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <!-- C. 字体度量 -->
+        <details class="control-group">
+          <summary>C. 字体度量 (Fonts / D2)</summary>
+          <div class="control-items">
+            <label>
+              <span>字体系列</span>
+              <select id="font-series">
+                <option value="E">E</option>
+              </select>
+            </label>
+            <label>
+              <span>平均字宽比例</span>
+              <input type="range" id="font-char-width" min="0.3" max="1.0" step="0.05" value="0.6" />
+              <output id="font-char-width-val">0.6</output>
+            </label>
+            <label>
+              <span>Ascent 比例</span>
+              <input type="range" id="font-ascent" min="0.5" max="1.0" step="0.05" value="0.75" />
+              <output id="font-ascent-val">0.75</output>
+            </label>
+            <label>
+              <span>Descent 比例</span>
+              <input type="range" id="font-descent" min="0.0" max="0.5" step="0.05" value="0.25" />
+              <output id="font-descent-val">0.25</output>
+            </label>
+          </div>
+        </details>
+
+        <!-- D. 图标/盾形度量 -->
+        <details class="control-group">
+          <summary>D. 图标/盾形度量 (Icons / D2)</summary>
+          <div class="control-items">
+            <h4>箭头</h4>
+            <label>
+              <span>缩放策略</span>
+              <select id="arrow-scale-policy">
+                <option value="match_text_line">match_text_line</option>
+                <option value="fixed_k_h">fixed_k_h</option>
+              </select>
+            </label>
+            <label>
+              <span>固定高度系数 (k)</span>
+              <input type="number" id="arrow-k" value="8" step="0.5" min="4" max="16" disabled />
+            </label>
+            <h4>盾形</h4>
+            <label>
+              <span>缩放策略</span>
+              <select id="shield-scale-policy">
+                <option value="match_text_line">match_text_line</option>
+                <option value="fixed_k_h">fixed_k_h</option>
+              </select>
+            </label>
+            <label>
+              <span>固定高度系数 (k)</span>
+              <input type="number" id="shield-k" value="10" step="0.5" min="4" max="20" disabled />
+            </label>
+            <label>
+              <span>基线锚点</span>
+              <select id="icon-baseline-anchor">
+                <option value="middle">middle</option>
+                <option value="baselineOffset">baselineOffset</option>
+              </select>
+            </label>
+            <label>
+              <span>基线偏移 (h)</span>
+              <input type="number" id="icon-baseline-offset" value="0" step="0.5" min="-4" max="4" disabled />
+            </label>
+          </div>
+        </details>
+
+        <!-- E. 引擎与单位 -->
+        <details class="control-group" open>
+          <summary>E. 引擎与单位 (Engine / D1)</summary>
+          <div class="control-items">
+            <label>
+              <span>px/h 比例</span>
+              <input type="range" id="engine-px-per-h" min="5" max="20" step="1" value="10" />
+              <output id="engine-px-per-h-val">10</output>
+            </label>
+            <label>
+              <span>像素对齐模式</span>
+              <select id="engine-snap-mode">
+                <option value="half-pixel">half-pixel (0.5)</option>
+                <option value="round">round (整数)</option>
+                <option value="none">none (不对齐)</option>
+              </select>
+            </label>
+            <label>
+              <span>文字锚点</span>
+              <select id="engine-text-anchor">
+                <option value="useBaseline">useBaseline</option>
+                <option value="boxTopAscent">boxTopAscent</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <!-- F. 证据与叠加 -->
+        <details class="control-group" open>
+          <summary>F. 证据与叠加 (Evidence)</summary>
+          <div class="control-items">
+            <label class="checkbox-label">
+              <input type="checkbox" id="overlay-content-bbox" checked />
+              <span>内容包络框</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="overlay-board" checked />
+              <span>板面外框</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="overlay-boxes" />
+              <span>元素盒框</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="overlay-baselines" checked />
+              <span>文本基线</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="overlay-midline" checked />
+              <span>组中线</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="overlay-grid" />
+              <span>像素网格</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="overlay-spacing" checked />
+              <span>间距标注</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="show-metrics" checked />
+              <span>显示数值面板</span>
+            </label>
+          </div>
+        </details>
+
+        <!-- G. 场景与压力测试 -->
+        <details class="control-group">
+          <summary>G. 场景测试 (Convenience)</summary>
+          <div class="control-items">
+            <button class="btn-full" id="btn-long-text">长文本</button>
+            <button class="btn-full" id="btn-short-text">短文本</button>
+            <button class="btn-full" id="btn-extreme-small">极小参数</button>
+            <button class="btn-full" id="btn-extreme-large">极大参数</button>
+            <hr />
+            <button class="btn-full btn-primary" id="btn-export-svg">📥 下载 SVG</button>
+            <button class="btn-full" id="btn-copy-svg">📋 复制 SVG 源码</button>
+            <button class="btn-full" id="btn-copy-config">📋 复制配置 JSON</button>
+            <label class="btn-full btn-secondary">
+              📂 加载配置 JSON
+              <input type="file" id="file-load-config" accept=".json" style="display:none" />
+            </label>
+          </div>
+        </details>
+      </div>
+    </aside>
+
+    <!-- 右侧预览区 -->
+    <main class="preview-area">
+      <div class="preview-header">
+        <h2>🖼️ 实时预览</h2>
+        <div class="preview-controls">
+          <button id="btn-zoom-out" class="btn-icon" title="缩小">−</button>
+          <span id="zoom-level">100%</span>
+          <button id="btn-zoom-in" class="btn-icon" title="放大">+</button>
+          <button id="btn-zoom-reset" class="btn-icon" title="重置缩放">⊙</button>
+        </div>
+      </div>
+
+      <div class="preview-stage" id="preview-stage">
+        <!-- SVG 将内联显示在这里 -->
+      </div>
+
+      <!-- 数值面板 -->
+      <aside class="metrics-panel" id="metrics-panel">
+        <div class="metrics-header">
+          <h3>📊 数值面板</h3>
+          <button id="btn-toggle-metrics" class="btn-icon">−</button>
+        </div>
+        <div class="metrics-content" id="metrics-content">
+          <!-- 动态生成 -->
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- 加载引擎模块 -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+

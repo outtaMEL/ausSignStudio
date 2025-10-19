@@ -1,0 +1,10 @@
+{
+  "templateCode": "G1-1",
+  "input": {
+    "destinationName": "Mary Hill",
+    "distanceKm": "12",
+    "arrow": "arrow-right-std"
+  },
+  "pxPerH": 10
+}
+

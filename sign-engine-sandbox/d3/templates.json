@@ -1,0 +1,80 @@
+{
+  "G1-1": {
+    "font_series": "E",
+    "letter_height_h": 8,
+    "line_spacing_h": 0.75,
+    "group_spacing_h": 1.0,
+    "board_pad_h": 1.0,
+    "arrow_placement": "right",
+    "arrow_v_place": "middle",
+    "variables": ["destinationName", "distanceKm", "arrow"],
+    "layout": [
+      {"type": "text", "bind": "destinationName"},
+      {"type": "text", "bind": "distanceKm"},
+      {"type": "icon", "bind": "arrow"}
+    ],
+    "_comment": "arrow_v_place 可选值: middle | baseline-line1 | baseline-line2 | cap-middle | optical-bottom"
+  },
+  "G1-1-baseline2": {
+    "font_series": "E",
+    "letter_height_h": 8,
+    "line_spacing_h": 0.75,
+    "group_spacing_h": 1.0,
+    "board_pad_h": 1.0,
+    "arrow_placement": "right",
+    "arrow_v_place": "baseline-line2",
+    "variables": ["destinationName", "distanceKm", "arrow"],
+    "layout": [
+      {"type": "text", "bind": "destinationName"},
+      {"type": "text", "bind": "distanceKm"},
+      {"type": "icon", "bind": "arrow"}
+    ],
+    "_comment": "箭头对齐第二行基线"
+  },
+  "G1-1-left": {
+    "font_series": "E",
+    "letter_height_h": 8,
+    "line_spacing_h": 0.75,
+    "group_spacing_h": 1.0,
+    "board_pad_h": 1.0,
+    "arrow_placement": "left",
+    "arrow_v_place": "middle",
+    "variables": ["destinationName", "distanceKm", "arrow"],
+    "layout": [
+      {"type": "text", "bind": "destinationName"},
+      {"type": "text", "bind": "distanceKm"},
+      {"type": "icon", "bind": "arrow"}
+    ],
+    "_comment": "左箭头 + 几何居中"
+  },
+  "G1-1-optical": {
+    "font_series": "E",
+    "letter_height_h": 8,
+    "line_spacing_h": 0.75,
+    "group_spacing_h": 1.0,
+    "board_pad_h": 1.0,
+    "arrow_placement": "right",
+    "arrow_v_place": "optical-bottom",
+    "variables": ["destinationName", "distanceKm", "arrow"],
+    "layout": [
+      {"type": "text", "bind": "destinationName"},
+      {"type": "text", "bind": "distanceKm"},
+      {"type": "icon", "bind": "arrow"}
+    ],
+    "_comment": "光学下沉（略低于几何中线）"
+  },
+  "G1-2": {
+    "font_series": "E",
+    "letter_height_h": 8,
+    "line_spacing_h": 0.75,
+    "group_spacing_h": 1.0,
+    "board_pad_h": 1.0,
+    "panel_spacing_h": 0.3,
+    "arrow_placement": "right",
+    "arrow_v_place": "middle",
+    "shield_placement": "left",
+    "variables": ["panels"],
+    "_comment": "三块面板堆叠，panel_spacing_h 是面板之间的间距"
+  }
+}
+
